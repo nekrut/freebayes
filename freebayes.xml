@@ -172,7 +172,7 @@
 ## ALGORITHMIC FEATURES
         
         #if str( $options_type.algorithmic_features.algorithmic_features_selector ) == "True":
-            v
+            ${options_type.algorithmic_features.report_genotype_likelihood_max}
             -B "${options_type.algorithmic_features.B}"
             --genotyping-max-banddepth "${options_type.algorithmic_features.genotyping_max_banddepth}"
             -W "${options_type.algorithmic_features.W}"
@@ -463,7 +463,7 @@
     <!-- algorithmic features -->
     
     <conditional name="algorithmic_features">
-      <param name="algorithmic_features_selector" type="boolean" truevalue="set" falsevalue="do_not_set" label="Tweak agrithmic features?" help="Sets --report-genotypes-likelihood-max, -B, --genotyping-max-banddepth, -W, -N, S, -j, -H, -D, -= options  " />
+      <param name="algorithmic_features_selector" type="boolean" truevalue="set" falsevalue="do_not_set" label="Tweak algorithmic features?" help="Sets --report-genotypes-likelihood-max, -B, --genotyping-max-banddepth, -W, -N, S, -j, -H, -D, -= options  " />
       <when value="set">
         <param name="report_genotype_likelihood_max" type="boolean" truevalue="--report-genotype-likelihood-max" falsevalue="" checked="False" label="Report genotypes using the maximum-likelihood estimate provided from genotype likelihoods." help="--report-genotype-likelihood-max; default=False" />
         <param name="B" type="integer" value="1000" label="Iterate no more than N times during genotyping step" help="-B --genotyping-max-iterations; default=1000." />

@@ -166,7 +166,7 @@
         #if str( $options_type.genotype_likelihoods.genotype_likelihoods_selector ) == "True":
           --base-quality-cap "${$options_type.genotype_likelihoods.base_quality_cap}"
           ${$options_type.genotype_likelihoods.experimental_gls}
-          --prob_contamination "${$options_type.genotype_likelihoods.prob_contamination}"
+          --prob-contamination "${$options_type.genotype_likelihoods.prob_contamination}"
         #end if
         
 ## ALGORITHMIC FEATURES

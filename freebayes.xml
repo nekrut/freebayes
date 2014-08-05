@@ -119,7 +119,7 @@
             ${options_type.allele_scope.u}
             -n "${options_type.allele_scope.n}"
             --haplotype-length "${options_type.allele_scope.haplotype_length}"
-            --min-repeat-length "${options_type.allele_scope.min_repeat_length}"
+            --min-repeat-size "${options_type.allele_scope.min_repeat_length}"
             --min-repeat-entropy "${options_type.allele_scope.min_repeat_entropy}"
             ${options_type.allele_scope.no_partial_observations}
         #end if
@@ -166,13 +166,13 @@
         #if str( $options_type.genotype_likelihoods.genotype_likelihoods_selector ) == "True":
           --base-quality-cap "${$options_type.genotype_likelihoods.base_quality_cap}"
           ${$options_type.genotype_likelihoods.experimental_gls}
-          --prob_contamination "${$options_type.genotype_likelihoods.prob_contamination}"
+          --prob-contamination "${$options_type.genotype_likelihoods.prob_contamination}"
         #end if
         
 ## ALGORITHMIC FEATURES
         
         #if str( $options_type.algorithmic_features.algorithmic_features_selector ) == "True":
-            v
+            ${options_type.algorithmic_features.report_genotype_likelihood_max}
             -B "${options_type.algorithmic_features.B}"
             --genotyping-max-banddepth "${options_type.algorithmic_features.genotyping_max_banddepth}"
             -W "${options_type.algorithmic_features.W}"
@@ -375,16 +375,16 @@
     <!-- allelic scope -->
 
       <conditional name="allele_scope">
-        <param name="allele_scope_selector" type="boolean" truevalue="set" falsevalue="do_not_set" label="Set allelic scope?" help="Sets -I, i, -X, -u, -n, -E, --haplotype-length, --min-repeat-length, --min-repeat-entropy, and --no-partial-observations options  " />
+        <param name="allele_scope_selector" type="boolean" truevalue="set" falsevalue="do_not_set" label="Set allelic scope?" help="Sets -I, i, -X, -u, -n, --haplotype-length, --min-repeat-size, --min-repeat-entropy, and --no-partial-observations options  " />
         <when value="set">
           <param name="I" type="boolean" truevalue="-I" falsevalue="" checked="False" label="Ignore SNP alleles" help="-I --no-snps; default=False" />
           <param name="i" type="boolean" truevalue="-i" falsevalue="" checked="False" label="Ignore indels alleles" help="-i --no-indels; default=False" />
           <param name="X" type="boolean" truevalue="-X" falsevalue="" checked="False" label="Ignore multi-nucleotide polymorphisms, MNPs" help="-X --no-mnps; default=False" />
           <param name="u" type="boolean" truevalue="-u" falsevalue="" checked="False" label="Ignore complex events (composites of other classes)." help="-u --no-complex; default=False" />
           <param name="n" type="integer" value="0" label="How many best SNP alleles to evaluate" help="-n --use-best-n-alleles; default=0 (all). Alleles are ranked by the sum of supporting quality scores. Set to 0 to evaluate all" />
-          <param name="haplotype_length" type="integer" value="3" label="Allow haplotype calls with contiguous embedded matches of up to (nucleotides)" help="--haplotype-length; default=3." />
-          <param name="min_repeat_length" type="integer" value="5" label="When assembling observations across repeats, require the total repeat length at least this many bp" help="--min-repeat-length; default=5." />
-          <param name="min_repeat_entropy" type="integer" value="0" label="To detect interrupted repeats, build across sequence until it has entropy > (bits per bp)" help="--min-repeat-entrpy; default=0 (off)." />
+          <param name="haplotype_length" type="integer" value="3" label="Allow haplotype calls with contiguous embedded matches of up to (nucleotides)" help="-E --max-complex-gap --haplotype-length; default=3." />
+          <param name="min_repeat_length" type="integer" value="5" label="When assembling observations across repeats, require the total repeat length at least this many bp" help="--min-repeat-size; default=5." />
+          <param name="min_repeat_entropy" type="integer" value="0" label="To detect interrupted repeats, build across sequence until it has entropy > (bits per bp)" help="--min-repeat-entropy; default=0 (off)." />
           <param name="no_partial_observations" type="boolean" truevalue="--no-partial-observations" falsevalue="" checked="False" label="Exclude observations which do not fully span the dynamically-determined detection window" help="--no-partial-observations; default=use all observations, dividing partial support across matching haplotypes when generating haplotypes.  " />
         </when>
         <when value="do_not_set">
@@ -463,7 +463,7 @@
     <!-- algorithmic features -->
     
     <conditional name="algorithmic_features">
-      <param name="algorithmic_features_selector" type="boolean" truevalue="set" falsevalue="do_not_set" label="Tweak agrithmic features?" help="Sets --report-genotypes-likelihood-max, -B, --genotyping-max-banddepth, -W, -N, S, -j, -H, -D, -= options  " />
+      <param name="algorithmic_features_selector" type="boolean" truevalue="set" falsevalue="do_not_set" label="Tweak algorithmic features?" help="Sets --report-genotypes-likelihood-max, -B, --genotyping-max-banddepth, -W, -N, S, -j, -H, -D, -= options  " />
       <when value="set">
         <param name="report_genotype_likelihood_max" type="boolean" truevalue="--report-genotype-likelihood-max" falsevalue="" checked="False" label="Report genotypes using the maximum-likelihood estimate provided from genotype likelihoods." help="--report-genotype-likelihood-max; default=False" />
         <param name="B" type="integer" value="1000" label="Iterate no more than N times during genotyping step" help="-B --genotyping-max-iterations; default=1000." />
@@ -680,7 +680,7 @@ Allele scope::
       --haplotype-length N
                    Allow haplotype calls with contiguous embedded matches of up
                    to this length.  (default: 3)
-   --min-repeat-length N
+   --min-repeat-size N
                    When assembling observations across repeats, require the total repeat
                    length at least this many bp.  (default: 5)
    --min-repeat-entropy N

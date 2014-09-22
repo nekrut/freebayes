@@ -24,9 +24,9 @@
     
     ## Tabixize optional input_varinat_vcf file (for --variant-input option)
     
-    #if ( str( $options_type.options_type_selector ) == 'cline' or str( $options_type.options_type_selector ) == 'full' ) and str( $options_type.optional_inputs.optional_inputs_selector ) == 'set' and str( $options_type.optional_inputs.input_variant_type.input_variant_type_selector ) == "provide_vcf":
-        ln -s "${options_type.optional_inputs.input_variant_type.input_variant_vcf}" input_variant_vcf.vcf.gz &amp;&amp;
-        ln -s "${Tabixized_input}" input_variant_vcf.vcf.gz.tbi &amp;&amp;
+    #if ( str( $options_type.options_type_selector ) == 'cline' or str( $options_type.options_type_selector ) == 'full' ) and $options_type.optional_inputs.optional_inputs_selector and str( $options_type.optional_inputs.input_variant_type.input_variant_type_selector ) == "provide_vcf":
+        ln -s "${options_type.optional_inputs.input_variant_type.input_variant_vcf}" "input_variant_vcf.vcf.gz" &amp;&amp;
+        ln -s "${Tabixized_input}" "input_variant_vcf.vcf.gz.tbi" &amp;&amp;
     #end if
     
     ##finished setting up inputs
@@ -218,7 +218,7 @@
           #end if
           
           #if str( $options_type.optional_inputs.input_variant_type.input_variant_type_selector ) == "provide_vcf":
-            --variant-input input_variant_vcf.vcf.gz  ## input_variant_vcf.vcf.gz is symlinked to a galaxy-generated dataset in "Tabixize optional input_varinat_vcf file" section of the command line above
+            --variant-input "input_variant_vcf.vcf.gz"  ## input_variant_vcf.vcf.gz is symlinked to a galaxy-generated dataset in "Tabixize optional input_varinat_vcf file" section of the command line above
             ${options_type.optional_inputs.input_variant_type.only_use_input_alleles}
           #end if
           
